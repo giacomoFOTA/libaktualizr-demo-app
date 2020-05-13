@@ -13,7 +13,7 @@
 #include "primary/aktualizr.h"
 #include "utilities/utils.h"
 
-#include "virtualsecondary.h"
+#include "custom-secondary.h"
 
 namespace bpo = boost::program_options;
 
@@ -91,14 +91,14 @@ void initSecondaries(Aktualizr *aktualizr, const boost::filesystem::path& config
   for (auto it = config.begin(); it != config.end(); ++it) {
     std::string secondary_type = it.key().asString();
 
-    if (secondary_type == Primary::VirtualSecondaryConfig::Type) {
+    if (secondary_type == "custom") {
       for (const auto& c: *it) {
-        Primary::VirtualSecondaryConfig sec_cfg(c);
-        auto sec = std::make_shared<Primary::VirtualSecondary>(sec_cfg);
+        CustomSecondaryConfig sec_cfg(c);
+        auto sec = std::make_shared<CustomSecondary>(sec_cfg);
         aktualizr->AddSecondary(sec);
       }
     } else {
-      LOG_ERROR << "Unsupported type of Secondary: " << secondary_type << std::endl;
+      LOG_ERROR << "Unsupported type of Secondary: " << secondary_type << " Supported: custom\n";
     }
   }
 }

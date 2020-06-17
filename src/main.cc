@@ -129,7 +129,7 @@ int main(int argc, char *argv[]) {
 
     aktualizr.Initialize();
 
-    const char *cmd_list = "Available commands: SendDeviceData, CheckUpdates, Download, Install, CampaignCheck, CampaignAccept, Pause, Resume, Abort";
+    const char *cmd_list = "Available commands: SendDeviceData, CheckUpdates, Download, Install, CampaignCheck, CampaignAccept, FullUpdateCycle, Pause, Resume, Abort";
     std::cout << cmd_list << std::endl;
 
     std::vector<Uptane::Target> current_updates;
@@ -147,8 +147,26 @@ int main(int argc, char *argv[]) {
       } else if (command == "download") {
         aktualizr.Download(current_updates).get();
       } else if (command == "install") {
+        std::cout << "Warning: installation procedure started. Do not switch-off the vehicle or close the installer!!" << std::endl;
         aktualizr.Install(current_updates).get();
         current_updates.clear();
+        // Force to check again for updates, since otherwise the update procedure is not complete on server side
+        auto result = aktualizr.CheckUpdates().get();
+        current_updates = result.updates; 
+      } else if (command == "fullupdatecycle") {
+        // Perform automatically a full update cycle
+        // CheckUpdates
+        auto result = aktualizr.CheckUpdates().get();
+        current_updates = result.updates;
+        // Download
+        aktualizr.Download(current_updates).get();
+        //Install
+        std::cout << "Warning: installation procedure started. Do not switch-off the vehicle or close the installer!!" << std::endl;
+        aktualizr.Install(current_updates).get();
+        current_updates.clear();
+        // Force to check again for updates, since otherwise the update procedure is not complete on server side
+        result = aktualizr.CheckUpdates().get();
+        current_updates = result.updates; 
       } else if (command == "campaigncheck") {
         aktualizr.CampaignCheck().get();
       } else if (command == "campaignaccept") {

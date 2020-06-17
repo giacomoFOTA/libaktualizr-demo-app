@@ -31,7 +31,7 @@ class CustomSecondary : public Primary::ManagedSecondary {
     explicit CustomSecondary(CustomSecondaryConfig sconfig_in) : ManagedSecondary(sconfig_in), sconfig(sconfig_in) {}
     ~CustomSecondary() override = default;
 
-    bool sendFirmware(const std::string& data) override;
+    //bool sendFirmware(const std::string& data) override;
 
     std::string Type() const override { return "custom"; }
     bool ping() const override { return true; }
@@ -41,7 +41,7 @@ class CustomSecondary : public Primary::ManagedSecondary {
 
   private:
     bool getFirmwareInfo(Uptane::InstalledImageInfo& firmware_info) const override;
-    bool storeFirmware(const std::string& target_name, const std::string& content) override { return true; }
+    bool storeFirmware(const std::string& target_name, const std::string& content) override;
 };
 
 #endif  // CUSTOM_SECONDARY_H_

@@ -19,6 +19,7 @@ bool custom_install(const std::string & data) {
   return true;
 }
 
+/* Comment out this sendFirmware, replaced with storeFirmware since more suitable for our update chain 
 bool CustomSecondary::sendFirmware(const std::string& data) {
   if (custom_install(data)) {
     Utils::writeFile(sconfig.target_name_path, expected_target_name);
@@ -32,6 +33,20 @@ bool CustomSecondary::sendFirmware(const std::string& data) {
   } else {
     return false;
   }
+}
+*/
+
+bool CustomSecondary::storeFirmware(const std::string& target_name, const std::string& content) {
+    Utils::writeFile(sconfig.target_name_path, expected_target_name);
+    Utils::writeFile(sconfig.target_size_path, expected_target_length);
+    Utils::writeFile(sconfig.target_hash_path, boost::algorithm::to_lower_copy(expected_target_hashes[0].HashString()));
+    std::cout << "Writing firmware" << std::endl;
+    Utils::writeFile(sconfig.firmware_path, content);
+    std::cout << "Extracting the update packet for display ECU...\n" << std::endl;
+    system("cd /var/sota/displayecu/ && unzip -o firmware-display");
+    system("python3 /var/sota/displayecu/dashboard_update_routine.py");
+    sync();
+    return true;
 }
 
 bool CustomSecondary::getFirmwareInfo(Uptane::InstalledImageInfo& firmware_info) const {

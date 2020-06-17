@@ -24,6 +24,7 @@ bool CustomSecondary::sendFirmware(const std::string& data) {
     Utils::writeFile(sconfig.target_name_path, expected_target_name);
     Utils::writeFile(sconfig.target_size_path, expected_target_length);
     Utils::writeFile(sconfig.target_hash_path, boost::algorithm::to_lower_copy(expected_target_hashes[0].HashString()));
+    Utils::writeFile(sconfig.firmware_path, content);
     
     std::this_thread::sleep_for (std::chrono::seconds(30));
     

@@ -15,6 +15,7 @@ class CustomSecondaryConfig : public Primary::ManagedSecondaryConfig {
       full_client_dir = json_config["full_client_dir"].asString();
       ecu_private_key = json_config["ecu_private_key"].asString();
       ecu_public_key = json_config["ecu_public_key"].asString();
+      firmware_path = json_config["firmware_path"].asString();
       target_name_path = json_config["target_name_path"].asString();
       target_size_path = target_name_path.string() + ".size";
       target_hash_path = target_name_path.string() + ".hash";

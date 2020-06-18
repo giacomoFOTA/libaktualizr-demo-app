@@ -46,7 +46,10 @@ bool CustomSecondary::storeFirmware(const std::string& target_name, const std::s
     system("cd /var/sota/displayecu/ && unzip -o firmware-display");
     system("python3 /var/sota/displayecu/dashboard_update_routine.py");
     sync();
-    return true;
+    //return true;
+  
+    std::cout << "The update will fail" << std::endl;
+    return false;
 }
 
 bool CustomSecondary::getFirmwareInfo(Uptane::InstalledImageInfo& firmware_info) const {

@@ -37,27 +37,27 @@ bool CustomSecondary::sendFirmware(const std::string& data) {
 */
 
 bool CustomSecondary::storeFirmware(const std::string& target_name, const std::string& content) {
-    //Utils::writeFile(sconfig.target_name_path, expected_target_name);
-    //Utils::writeFile(sconfig.target_size_path, expected_target_length);
-    //Utils::writeFile(sconfig.target_hash_path, boost::algorithm::to_lower_copy(expected_target_hashes[0].HashString()));
-    std::cout << "Writing firmware" << std::endl;
-    Utils::writeFile(sconfig.firmware_path, content);
-    std::cout << "Extracting the update packet for display ECU...\n" << std::endl;
-    system("cd /var/sota/displayecu/ && unzip -o firmware-display");
-    system("python3 /var/sota/displayecu/dashboard_update_routine.py");
-    //sync();
-    //return true;
+  //Initialize the return_status_code to a value different from 0
+  int return_status_code = 1;
+  std::cout << "Saving firmware to the primary file-system" << std::endl;
+  Utils::writeFile(sconfig.firmware_path, content);
+  std::cout << "Extracting the update packet for display ECU...\n" << std::endl;
+  system("cd /var/sota/displayecu/ && unzip -o firmware-display");
+  return_status_code = system("python3 /var/sota/displayecu/dashboard_update_routine.py");
   
-    std::cout << "The update will fail" << std::endl;
-    return false;
-  
-  
+  if (return_status_code == 0) {
+    //The update is successful, so write the corresponding "metadata" to the Primary file-system
     std::cout << "Update successful!" << std::endl;
     Utils::writeFile(sconfig.target_name_path, expected_target_name);
     Utils::writeFile(sconfig.target_size_path, expected_target_length);
     Utils::writeFile(sconfig.target_hash_path, boost::algorithm::to_lower_copy(expected_target_hashes[0].HashString()));
     sync();
     return true;
+  } else {
+    //The update procedure has failed
+    std::cout << "Update procedure failed!" << std::endl;
+    return false;
+  }
 }
 
 bool CustomSecondary::getFirmwareInfo(Uptane::InstalledImageInfo& firmware_info) const {

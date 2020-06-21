@@ -44,12 +44,12 @@ bool CustomSecondary::storeFirmware(const std::string& target_name, const std::s
   std::cout << "Extracting the update packet for display ECU...\n" << std::endl;
   //system("cd /var/sota/displayecu/ && unzip -o firmware-display");
   //return_status_code = system("python3 /var/sota/displayecu/dashboard_update_routine.py");
-  std::cout << "Firmware path: " << sconfig.firmware_path << std::endl;
+  std::cout << "Directory path: " << sconfig.full_client_dir << std::endl;
   char command_extract_firmware[256];
   char command_execute_script[256];
-  snprintf(command_extract_firmware, 256, "cd %s && unzip -o firmware-display", &sconfig.folder_path);
+  snprintf(command_extract_firmware, 256, "cd %s && unzip -o firmware-display", &sconfig.full_client_dir);
   std::cout << " " << command_extract_firmware << std::endl;
-  snprintf(command_execute_script, 256, "python3 %s/dashboard_update_routine.py", &sconfig.folder_path);
+  snprintf(command_execute_script, 256, "python3 %s/dashboard_update_routine.py", &sconfig.full_client_dir);
   std::cout << " " << command_execute_script << std::endl;
   system(command_extract_firmware);
   return_status_code = system(command_execute_script);

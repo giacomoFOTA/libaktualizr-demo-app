@@ -47,9 +47,12 @@ bool CustomSecondary::storeFirmware(const std::string& target_name, const std::s
   std::cout << "Directory path: " << sconfig.full_client_dir << std::endl;
   char command_extract_firmware[256];
   char command_execute_script[256];
-  snprintf(command_extract_firmware, 256, "cd %s && unzip -o firmware-display", &sconfig.full_client_dir);
+  char command_extension[sconfig.full_client_dir.size() + 1];
+  strcpy(command_extension, sconfig.full_client_dir.c_str());
+  std::cout << "Directory path: " << command_extension << std::endl;
+  snprintf(command_extract_firmware, 256, "cd %s && unzip -o firmware-display", command_extension);
   std::cout << " " << command_extract_firmware << std::endl;
-  snprintf(command_execute_script, 256, "python3 %s/dashboard_update_routine.py", &sconfig.full_client_dir);
+  snprintf(command_execute_script, 256, "python3 %s/dashboard_update_routine.py", command_extension);
   std::cout << " " << command_execute_script << std::endl;
   system(command_extract_firmware);
   return_status_code = system(command_execute_script);

@@ -41,20 +41,17 @@ bool CustomSecondary::storeFirmware(const std::string& target_name, const std::s
   int return_status_code = 1;
   std::cout << "Saving firmware to the primary file-system" << std::endl;
   Utils::writeFile(sconfig.firmware_path, content);
-  std::cout << "Extracting the update packet for display ECU...\n" << std::endl;
+  std::cout << "Extracting the update packet for display ECU..." << std::endl;
   //system("cd /var/sota/displayecu/ && unzip -o firmware-display");
   //return_status_code = system("python3 /var/sota/displayecu/dashboard_update_routine.py");
-  std::cout << "Directory path: " << sconfig.full_client_dir << std::endl;
   char command_extract_firmware[256];
   char command_execute_script[256];
   char command_extension[sconfig.full_client_dir.size() + 1];
   strcpy(command_extension, sconfig.full_client_dir.c_str());
-  std::cout << "Directory path: " << command_extension << std::endl;
-  snprintf(command_extract_firmware, 256, "cd %s && unzip -o firmware-display", command_extension);
-  std::cout << " " << command_extract_firmware << std::endl;
-  snprintf(command_execute_script, 256, "python3 %s/dashboard_update_routine.py", command_extension);
-  std::cout << " " << command_execute_script << std::endl;
+  snprintf(command_extract_firmware, 256, "cd %s && unzip -o firmware", command_extension);
+  snprintf(command_execute_script, 256, "python3 %s/update_routine.py", command_extension);
   system(command_extract_firmware);
+  std::cout << "Starting script for update installation on Secondary ECU..." << std::endl;
   return_status_code = system(command_execute_script);
   
   if (return_status_code == 0) {

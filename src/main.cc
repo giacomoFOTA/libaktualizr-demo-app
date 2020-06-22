@@ -148,7 +148,11 @@ int main(int argc, char *argv[]) {
         aktualizr.Download(current_updates).get();
       } else if (command == "install") {
         std::cout << "Warning: installation procedure started. Do not switch-off the vehicle or close the installer!!" << std::endl;
-        aktualizr.Install(current_updates).get();
+        //aktualizr.Install(current_updates).get();
+        //current_updates.clear();
+        for (auto &t: targets) {
+          aktualizr.Install({t}).get();
+        }
         current_updates.clear();
         // Force to check again for updates, since otherwise the update procedure is not complete on server side
         auto result = aktualizr.CheckUpdates().get();
@@ -162,7 +166,11 @@ int main(int argc, char *argv[]) {
         aktualizr.Download(current_updates).get();
         //Install
         std::cout << "Warning: installation procedure started. Do not switch-off the vehicle or close the installer!!" << std::endl;
-        aktualizr.Install(current_updates).get();
+        //aktualizr.Install(current_updates).get();
+        //current_updates.clear();
+        for (auto &t: targets) {
+          aktualizr.Install({t}).get();
+        }
         current_updates.clear();
         // Force to check again for updates, since otherwise the update procedure is not complete on server side
         result = aktualizr.CheckUpdates().get();

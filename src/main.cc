@@ -150,7 +150,7 @@ int main(int argc, char *argv[]) {
         std::cout << "Warning: installation procedure started. Do not switch-off the vehicle or close the installer!!" << std::endl;
         //aktualizr.Install(current_updates).get();
         //current_updates.clear();
-        for (auto &t: targets) {
+        for (auto &t: current_updates) {
           aktualizr.Install({t}).get();
         }
         current_updates.clear();
@@ -168,7 +168,7 @@ int main(int argc, char *argv[]) {
         std::cout << "Warning: installation procedure started. Do not switch-off the vehicle or close the installer!!" << std::endl;
         //aktualizr.Install(current_updates).get();
         //current_updates.clear();
-        for (auto &t: targets) {
+        for (auto &t: current_updates) {
           aktualizr.Install({t}).get();
         }
         current_updates.clear();

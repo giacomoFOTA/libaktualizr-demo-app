@@ -41,7 +41,7 @@ bool CustomSecondary::storeFirmware(const std::string& target_name, const std::s
   int return_status_code = 1;
   std::cout << "Saving firmware to the primary file-system" << std::endl;
   Utils::writeFile(sconfig.firmware_path, content);
-  std::cout << "Extracting the update packet for display ECU..." << std::endl;
+  std::cout << "Extracting the update packet for " << sconfig.ecu_hardware_id << std::endl;
   //system("cd /var/sota/displayecu/ && unzip -o firmware-display");
   //return_status_code = system("python3 /var/sota/displayecu/dashboard_update_routine.py");
   char command_extract_firmware[256];

@@ -176,10 +176,7 @@ int main(int argc, char *argv[]) {
         result = aktualizr.CheckUpdates().get();
         current_updates = result.updates; 
       } else if (command == "campaigncheck") {
-        //aktualizr.CampaignCheck().get();
-        auto campaign_accept_result = aktualizr.CampaignCheck().get();
-        std::cout << "Printing return value of CampaignCheck" << std::endl;
-        std::cout << "" << campaign_accept_result << std::endl;
+        aktualizr.CampaignCheck().get();
       } else if (command == "campaignaccept") {
         if (words.size() == 2) {
           aktualizr.CampaignControl(words.at(1), campaign::Cmd::Accept).get();
